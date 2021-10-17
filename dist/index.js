@@ -13,7 +13,9 @@ import Discord from "discord.js";
 import Express from "express";
 import Http from "http";
 import Fetch from "node-fetch";
-Dotenv.config({ path: Path.join(process.cwd(), ".env") });
+if (process.env.NODE_ENV !== "production") {
+    Dotenv.config({ path: Path.join(process.cwd(), ".env") });
+}
 // Initialize Discord
 const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS] });
 // Initialize Server
