@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Dotenv from "dotenv";
 import Path from "path";
-import Discord from "discord.js";
+// import Discord from "discord.js"
 import Express from "express";
 import Http from "http";
 import Fetch from "node-fetch";
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== "production") {
     Dotenv.config({ path: Path.join(process.cwd(), ".env") });
 }
 // Initialize Discord
-const client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS] });
+// const client: Discord.Client = new Discord.Client({ intents: [ Discord.Intents.FLAGS.GUILDS ] });
 // Initialize Server
 const app = Express();
 const server = Http.createServer(app);
@@ -129,11 +129,11 @@ function ResError(res, options) {
     });
 }
 // Run Discord
-client
-    .login(process.env.TOKEN)
-    .then(() => {
-    console.log("Client logged!");
-});
+// client
+//   .login(process.env.TOKEN)
+//   .then(() => {
+//     console.log("Client logged!");
+//   });
 // Run server
 server.listen(PORT, () => {
     console.log("Listening on ", PORT);
