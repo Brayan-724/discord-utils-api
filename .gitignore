@@ -2,6 +2,7 @@ node_modules/
 src/
 
 *.code-workspace
+*.env
 
 nodemon.json
 tsconfig.json
