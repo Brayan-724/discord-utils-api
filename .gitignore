@@ -1,10 +1,9 @@
 node_modules/
-src/
+cache/
 
 *.code-workspace
 *.env
 
 nodemon.json
-tsconfig.json
 yarn.lock
 yarn-error.log

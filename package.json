@@ -2,6 +2,7 @@
   "name": "discord-utils-api",
   "version": "1.0.0",
   "type": "module",
+  "typings": "./typings",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon dist/index.js"
