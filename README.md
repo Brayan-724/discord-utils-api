@@ -19,7 +19,7 @@
 <!-- Status -->
 
 <h4 align="center"> 
-	🚧  Discord Utils Api 🚀 v1.0.6  🚧
+	🚧  Discord Utils Api 🚀 v1.1.1  🚧
 </h4> 
 
 <hr>
