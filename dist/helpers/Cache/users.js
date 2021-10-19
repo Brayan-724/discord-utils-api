@@ -1,22 +1,18 @@
 import * as Utils from "./utils.js";
 import * as Constants from "../../constants.js";
 const file = Constants.cacheUsersFile;
+Utils.touchIf(file, JSON.stringify({
+    lastUpdate: 0,
+    users: {},
+}, undefined, 2));
 export function save(json) {
     Utils.writeFile(file, process.env.NODE_ENV === "production"
         ? JSON.stringify(json)
         : JSON.stringify(json, undefined, 2));
 }
 export function read() {
-    try {
-        const json = Utils.readFile(file);
-        return JSON.parse(json);
-    }
-    catch (_a) {
-        return {
-            lastUpdate: 0,
-            users: {},
-        };
-    }
+    const json = Utils.readFile(file);
+    return JSON.parse(json);
 }
 export function set(...users) {
     const oldJson = read();
@@ -31,12 +27,14 @@ export function set(...users) {
     return newJson;
 }
 export function getByID(id) {
-    return (read().users.find((value) => {
-        return value.id === id;
-    }) || null);
+    return (read().users[id] || null);
 }
 export function getByUsername(username) {
-    return (read().users.find((value) => {
-        return value.username === username;
-    }) || null);
+    for (const id in read().users) {
+        if (Object.prototype.hasOwnProperty.call(read().users, id)) {
+            const element = read().users[id];
+            if (element.username === username)
+                return element;
+        }
+    }
 }

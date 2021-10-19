@@ -1,6 +1,7 @@
-import Fs from "fs"
-import Path from "path"
-import * as Constants from "../../constants.js"
+import e from "express";
+import Fs from "fs";
+import Path from "path";
+import * as Constants from "../../constants.js";
 
 export function resolvePath(path: string) {
   return path.includes(Constants.cacheDir)
@@ -8,14 +9,44 @@ export function resolvePath(path: string) {
     : Path.join(Constants.cacheDir, path);
 }
 
+export function exists(path: string): boolean {
+  return Fs.existsSync(resolvePath(path));
+}
+
 export function getPath(path: string): string {
   const _path: string = resolvePath(path);
 
-  if (Fs.existsSync(_path)) {
-    return _path;
-  }
+  createIf(_path);
 
-  throw new ReferenceError(`"${_path}" doesn't exists`);
+  return _path;
+}
+
+export function createIf(path: string, _default: string | Buffer = "") {
+  if(exists(path)) return;
+
+  if (path.match(/.*\..+$/) === null) {
+    mkdirIf(path);
+  } else {
+    touchIf(path, _default);
+  }
+}
+
+export function touchIf(_path: string, _default: string | Buffer) {
+  const path = resolvePath(_path);
+  if (exists(path)) return;
+  
+  mkdirIf(Path.dirname(resolvePath(path)));
+
+  writeFile(resolvePath(path), _default);
+}
+
+export function mkdirIf(_path: string) {
+  const path = resolvePath(_path);
+  if (exists(path)) return;
+
+  // mkdirIf(Path.dirname(path))
+
+  Fs.mkdirSync(resolvePath(path));
 }
 
 export function readDir(dir: string): string[] {
@@ -34,5 +65,8 @@ export function readFileBuffer(file: string): Buffer {
 
 export function writeFile(file: string, data: string | Buffer) {
   const path: string = resolvePath(file);
+  
+  mkdirIf(Path.dirname(resolvePath(path)));
+
   Fs.writeFileSync(path, data);
 }

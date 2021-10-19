@@ -3,21 +3,17 @@ import * as Utils from "./utils.js";
 import * as Constants from "../../constants.js";
 const dir = Constants.cacheImgDir;
 const file = Utils.resolvePath("images.json");
+Utils.touchIf(file, JSON.stringify({
+    lastUpdate: 0,
+    images: {},
+}, undefined, 2));
 export function save(json) {
     Utils.writeFile(file, process.env.NODE_ENV === "production"
         ? JSON.stringify(json)
         : JSON.stringify(json, undefined, 2));
 }
 export function read() {
-    try {
-        return JSON.parse(Utils.readFile(file));
-    }
-    catch (_a) {
-        return {
-            lastUpdate: 0,
-            images: {},
-        };
-    }
+    return JSON.parse(Utils.readFile(file));
 }
 export function set(...images) {
     var _a;

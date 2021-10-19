@@ -4,6 +4,11 @@ import { jsonObject, DiscordUserInfo, Snowflake, TypeObject } from "../../types.
 
 const file: string = Constants.cacheUsersFile;
 
+Utils.touchIf(file, JSON.stringify({
+  lastUpdate: 0,
+  users: {},
+}, undefined, 2))
+
 export interface UserCache extends DiscordUserInfo {
   lastUpdate: number;
 }
@@ -23,15 +28,8 @@ export function save(json: UsersCache) {
 }
 
 export function read(): UsersCache {
-  try {
-    const json = Utils.readFile(file);
-    return JSON.parse(json);
-  } catch {
-    return {
-      lastUpdate: 0,
-      users: {},
-    };
-  }
+  const json = Utils.readFile(file);
+  return JSON.parse(json)
 }
 
 export function set(...users: UserCache[]): UsersCache {
@@ -54,16 +52,16 @@ export function set(...users: UserCache[]): UsersCache {
 
 export function getByID(id: Snowflake): UserCache {
   return (
-    read().users.find((value) => {
-      return value.id === id;
-    }) || null
+    read().users[id] || null
   );
 }
 
 export function getByUsername(username: string): UserCache {
-  return (
-    read().users.find((value) => {
-      return value.username === username;
-    }) || null
-  );
+  for (const id in read().users) {
+    if (Object.prototype.hasOwnProperty.call(read().users, id)) {
+      const element = read().users[id];
+      if(element.username === username)
+        return element
+    }
+  }
 }

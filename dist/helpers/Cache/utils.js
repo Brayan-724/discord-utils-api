@@ -6,12 +6,37 @@ export function resolvePath(path) {
         ? path
         : Path.join(Constants.cacheDir, path);
 }
+export function exists(path) {
+    return Fs.existsSync(resolvePath(path));
+}
 export function getPath(path) {
     const _path = resolvePath(path);
-    if (Fs.existsSync(_path)) {
-        return _path;
+    createIf(_path);
+    return _path;
+}
+export function createIf(path, _default = "") {
+    if (exists(path))
+        return;
+    if (path.match(/.*\..+$/) === null) {
+        mkdirIf(path);
     }
-    throw new ReferenceError(`"${_path}" doesn't exists`);
+    else {
+        touchIf(path, _default);
+    }
+}
+export function touchIf(_path, _default) {
+    const path = resolvePath(_path);
+    if (exists(path))
+        return;
+    mkdirIf(Path.dirname(resolvePath(path)));
+    writeFile(resolvePath(path), _default);
+}
+export function mkdirIf(_path) {
+    const path = resolvePath(_path);
+    if (exists(path))
+        return;
+    // mkdirIf(Path.dirname(path))
+    Fs.mkdirSync(resolvePath(path));
 }
 export function readDir(dir) {
     const path = getPath(dir);
@@ -26,5 +51,6 @@ export function readFileBuffer(file) {
 }
 export function writeFile(file, data) {
     const path = resolvePath(file);
+    mkdirIf(Path.dirname(resolvePath(path)));
     Fs.writeFileSync(path, data);
 }

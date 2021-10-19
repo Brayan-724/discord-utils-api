@@ -1,10 +1,12 @@
 import Express from "express";
-import { IsSnowflake, ValidateSnowflake } from '../helpers/validators.js'
-import ResDef from "../helpers/response.js";
-import { fetchUser } from "../helpers/user.js";
-import { fetchImg } from "../helpers/image.js";
 
-export default function(app: Express.Express) {
+export default async function(app: Express.Express) {
+  const { IsSnowflake, ValidateSnowflake } = await import('../helpers/validators.js')
+  const ResDef = await (await import("../helpers/response.js")).default
+  const { fetchUser } = await import("../helpers/user.js")
+  const { fetchImg } = await import("../helpers/image.js")
+
+
   app.get("/avatar/:id", async (req: Express.Request, res: Express.Response): Promise<void> => {
     const id: string = req.params.id;
   

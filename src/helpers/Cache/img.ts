@@ -6,6 +6,11 @@ import { jsonObject, Snowflake, TypeObject } from "../../types.js";
 const dir: string = Constants.cacheImgDir;
 const file: string = Utils.resolvePath("images.json");
 
+Utils.touchIf(file, JSON.stringify({
+  lastUpdate: 0,
+  images: {},
+}, undefined, 2))
+
 export interface ImgData extends jsonObject {
   info: ImgInfo;
   size: number;
@@ -35,14 +40,7 @@ export function save(json: ImgsCache) {
 }
 
 export function read(): ImgsCache {
-  try {
-    return JSON.parse(Utils.readFile(file));
-  } catch {
-    return {
-      lastUpdate: 0,
-      images: {},
-    };
-  }
+  return JSON.parse(Utils.readFile(file));
 }
 
 export interface ImgSetData {
