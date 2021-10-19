@@ -5,9 +5,10 @@ import Http from "http";
 import Fs from "fs";
 import AvatarRoute from "./routes/avatar.js";
 import * as Constants from "./constants.js";
-Fs.rmSync(Constants.cacheDir, {
-    recursive: true
-});
+if (Fs.existsSync(Constants.cacheDir))
+    Fs.rmSync(Constants.cacheDir, {
+        recursive: true
+    });
 if (process.env.NODE_ENV !== "production") {
     Dotenv.config({ path: Path.join(process.cwd(), ".env") });
 }
