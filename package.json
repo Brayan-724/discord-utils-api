@@ -4,7 +4,7 @@
   "type": "module",
   "typings": "./typings",
   "scripts": {
-    "start": "tsc . && node dist/index.js",
+    "start": "tsc && node dist/index.js",
     "dev": "nodemon dist/index.js"
   },
   "dependencies": {
