@@ -4,6 +4,7 @@ import Express from "express";
 import Http from "http";
 import Fs from "fs";
 import AvatarRoute from "./routes/avatar.js";
+import UserRoute from "./routes/user.js";
 import * as Constants from "./constants.js";
 if (Fs.existsSync(Constants.cacheDir))
     Fs.rmSync(Constants.cacheDir, {
@@ -18,6 +19,7 @@ const server = Http.createServer(app);
 const PORT = parseInt(process.env.PORT, 10) || 1406;
 //* Endpoints
 AvatarRoute(app);
+UserRoute(app);
 // Run server
 server.listen(PORT, () => {
     console.log("Listening on ", PORT);
