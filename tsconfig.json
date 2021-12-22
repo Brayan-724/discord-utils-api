@@ -5,7 +5,6 @@
     "module": "ES2020",
     "moduleResolution": "Node",
     "outDir": "dist/",
-    "watch": true,
     "target": "ES2015",
     "resolveJsonModule": true,
     "pretty": false,
