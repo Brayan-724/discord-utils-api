@@ -3,6 +3,7 @@ import type Express from "express";
 export default async function (app: Express.Express) {
   const ResDef = await (await import("../helpers/response.js")).default;
   const { fetchUser } = await import("../helpers/user.js");
+  const { PublicFlagsDescriptionByFlag } = await import("../helpers/publicFlags.js");
 
   app.get("/user/:id", async (req, res) => {
     const { id } = req.params;
@@ -18,11 +19,14 @@ export default async function (app: Express.Express) {
       });
     }
 
-    // TODO: Return user with public flags resolved
+    const userResolved = {
+      ...user,
+      public_flags: PublicFlagsDescriptionByFlag[user.public_flags] || "None",
+    };
 
     return ResDef(res, {
       status: 200,
-      data: user,
+      data: userResolved,
     });
   });
 
